@@ -9,9 +9,9 @@ autoload -Uz vcs_info
 zstyle ':vcs_info:git:*' check-for-changes true
 zstyle ':vcs_info:git:*' unstagedstr '%F{red}✗%f'
 zstyle ':vcs_info:git:*' stagedstr '%F{yellow}●%f'
-zstyle ':vcs_info:git:*' formats '(%b %u%c)'
+zstyle ':vcs_info:git:*' formats '(%b%u%c)'
 # when rebase/merge/cherrypick.. is in progress
-zstyle ':vcs_info:git:*' actionformats '(%b|%a %u%c)'
+zstyle ':vcs_info:git:*' actionformats '(%b|%a%u%c)'
 zstyle ':vcs_info:*' enable git
 
 precmd() { vcs_info }
@@ -72,12 +72,17 @@ alias d=docker
 alias p=pacman
 alias dc=docker compose
 
-alias g=git
-alias gav=git add -v
-alias gcn!=git commit --amend --no-edit
-alias gpsup=git push
-alias gpsupf=git push --force-with-lease
-alias gco=git checkout
-alias gcm=git commit
+alias gav="git add -v"
+alias gcn!="git commit --amend --no-edit"
+alias gpsup="git push"
+alias gpsupf="git push --force-with-lease"
+alias gco="git checkout"
+alias gcm="git commit"
 
 alias k=kubectl
+
+alias src="source ~/.zshrc"
+
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."

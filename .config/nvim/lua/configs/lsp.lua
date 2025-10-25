@@ -36,6 +36,7 @@ else
     
     for k, v in pairs(servers) do
         vim.lsp.config(k, v)
+        vim.lsp.enable(k)
     end
 end
 
