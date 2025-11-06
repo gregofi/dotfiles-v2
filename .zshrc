@@ -61,7 +61,7 @@ fuzzy_hist_search() {
 }
 
 zle -N fuzzy_hist_search
-bindkey '^J' fuzzy_hist_search
+bindkey '^[[A' fuzzy_hist_search
 
 # aliases
 # working with .dotfiles
