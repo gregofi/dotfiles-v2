@@ -3,6 +3,8 @@ EDITOR=nvim
 HISTFILE=~/.histfile
 HISTSIZE=10000
 SAVEHIST=10000
+# setopt SHARE_HISTORY
+setopt INC_APPEND_HISTORY
 
 autoload -Uz vcs_info
 
@@ -36,32 +38,55 @@ compinit
 
 # prefix history
 
+# Index of the currently used history entry
+# It is not global index in the histfile, but
+# index in the list of matched entries (the grep'd result).
 FUZZY_HIST_IDX=$(( $HISTSIZE - 1 ))
+# The last found history entry
 FUZZY_HIST_LAST=""
 FUZZY_SEARCH_FOR=""
+FUZZY_FOUND_ENTRIES=()
 
 fuzzy_hist_search() {
-    if [[ $BUFFER != $FUZZY_HIST_LAST ]]; then
-        FUZZY_SEARCH_FOR=$BUFFER
-        FUZZY_HIST_IDX=$HISTSIZE
+    # If the text in the buffer does not equal to the last found history,
+    # the user must have changed the search term, so we reset the index.
+    if [[ "${BUFFER}" != "${FUZZY_HIST_LAST}" ]]; then
+        FUZZY_SEARCH_FOR="${BUFFER}"
+        FUZZY_FOUND_ENTRIES=()
+        while IFS= read -r line; do
+            matches+=("${line}")
+        done < <(grep -E "${FUZZY_SEARCH_FOR}" "${HISTFILE}" | uniq)
+        FUZZY_HIST_IDX="${#matches[@]}"
     fi
 
-    # todo: this will always return, even if idx is out of bounds
-    local next=$(grep -E --line-number "$FUZZY_SEARCH_FOR" $HISTFILE | head -n $FUZZY_HIST_IDX)
-    if [[ -z $next ]]; then
+    FUZZY_HIST_IDX=$(( FUZZY_HIST_IDX - 1 ))
+    FUZZY_HIST_LAST="${matches[${FUZZY_HIST_IDX}]}"
+
+    BUFFER="${FUZZY_HIST_LAST}"
+    CURSOR="${#BUFFER}"
+    zle redisplay
+}
+
+fuzzy_hist_back() {
+    if [[ "${BUFFER}" != "${FUZZY_HIST_LAST}" ]]; then
         return
     fi
 
-    FUZZY_HIST_IDX=$(( $(echo $next | wc -l) - 1 ))
-    FUZZY_HIST_LAST=$(echo $next | tail -n 1 | cut -d: -f2-)
+    FUZZY_HIST_IDX=$(( FUZZY_HIST_IDX + 1 ))
+    if [[ "${FUZZY_HIST_IDX}" -ge "${#matches[@]}" ]]; then
+        FUZZY_HIST_IDX=$(( ${#matches[@]} - 1 ))
+    fi
+    FUZZY_HIST_LAST="${matches[${FUZZY_HIST_IDX}]}"
 
-    BUFFER=${FUZZY_HIST_LAST}
-    CURSOR=${#BUFFER}
+    BUFFER="${FUZZY_HIST_LAST}"
+    CURSOR="${#BUFFER}"
     zle redisplay
 }
 
 zle -N fuzzy_hist_search
 bindkey '^[[A' fuzzy_hist_search
+zle -N fuzzy_hist_back
+bindkey '^[[B' fuzzy_hist_back
 
 # aliases
 # working with .dotfiles
