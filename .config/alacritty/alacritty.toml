@@ -1,5 +1,5 @@
 [env]
-WINIT_X11_SCALE_FACTOR = "1.2"
+WINIT_X11_SCALE_FACTOR = "1.1"
 
 [colors.primary]
 foreground = "#e0def4"
@@ -72,3 +72,6 @@ blue = "#9ccfd8"
 magenta = "#c4a7e7"
 cyan = "#ea9a97"
 white = "#e0def4"
+
+[keyboard]
+bindings = [{ key="N", mods="Control", action="SpawnNewInstance" }]

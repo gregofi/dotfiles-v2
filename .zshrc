@@ -36,31 +36,46 @@ zstyle :compinstall filename '/home/gregofi/.zshrc'
 autoload -Uz compinit
 compinit
 
-# prefix history
 
-# Index of the currently used history entry
-# It is not global index in the histfile, but
-# index in the list of matched entries (the grep'd result).
-FUZZY_HIST_IDX=$(( $HISTSIZE - 1 ))
-# The last found history entry
-FUZZY_HIST_LAST=""
-FUZZY_SEARCH_FOR=""
-FUZZY_FOUND_ENTRIES=()
+DEBUG=1
+
+# forward to printf
+debug() {
+    if [[ -z "${DEBUG}" ]]; then
+        return
+    fi
+    printf "\nDEBUG: "
+    printf $*
+    printf "\n"
+}
+
+fuzzy_fill_array() {
+    FUZZY_FOUND_ENTRIES=()
+    while IFS= read -r line; do
+        if [[ -z ${line} ]]; then
+            continue
+        fi
+        FUZZY_FOUND_ENTRIES+=("${line}")
+    done < <(grep -E "${FUZZY_SEARCH_FOR}" "${HISTFILE}" | uniq)
+    FUZZY_HIST_IDX="${#FUZZY_FOUND_ENTRIES[@]}"
+}
 
 fuzzy_hist_search() {
     # If the text in the buffer does not equal to the last found history,
     # the user must have changed the search term, so we reset the index.
     if [[ "${BUFFER}" != "${FUZZY_HIST_LAST}" ]]; then
         FUZZY_SEARCH_FOR="${BUFFER}"
-        FUZZY_FOUND_ENTRIES=()
-        while IFS= read -r line; do
-            matches+=("${line}")
-        done < <(grep -E "${FUZZY_SEARCH_FOR}" "${HISTFILE}" | uniq)
-        FUZZY_HIST_IDX="${#matches[@]}"
+        fuzzy_fill_array
     fi
 
+    # If no more entries found, stay at the last one
     FUZZY_HIST_IDX=$(( FUZZY_HIST_IDX - 1 ))
-    FUZZY_HIST_LAST="${matches[${FUZZY_HIST_IDX}]}"
+    if [[ "${FUZZY_HIST_IDX}" -lt 0 ]]; then
+        FUZZY_HIST_IDX=0
+        # No need to call redisplay, because the buffer is already showing
+        return
+    fi
+    FUZZY_HIST_LAST="${FUZZY_FOUND_ENTRIES[@]:${FUZZY_HIST_IDX}:1}"
 
     BUFFER="${FUZZY_HIST_LAST}"
     CURSOR="${#BUFFER}"
@@ -73,15 +88,29 @@ fuzzy_hist_back() {
     fi
 
     FUZZY_HIST_IDX=$(( FUZZY_HIST_IDX + 1 ))
-    if [[ "${FUZZY_HIST_IDX}" -ge "${#matches[@]}" ]]; then
-        FUZZY_HIST_IDX=$(( ${#matches[@]} - 1 ))
+    # If we're past the last entry (back at the start), clear the buffer
+    if [[ "${FUZZY_HIST_IDX}" -ge "${#FUZZY_FOUND_ENTRIES[@]}" ]]; then
+        FUZZY_HIST_IDX=$(( ${#FUZZY_FOUND_ENTRIES[@]} ))
+        BUFFER=""
+        FUZZY_HIST_LAST=""
+    else
+        FUZZY_HIST_LAST="${FUZZY_FOUND_ENTRIES[@]:${FUZZY_HIST_IDX}:1}"
     fi
-    FUZZY_HIST_LAST="${matches[${FUZZY_HIST_IDX}]}"
 
     BUFFER="${FUZZY_HIST_LAST}"
     CURSOR="${#BUFFER}"
     zle redisplay
 }
+
+# Index of the currently used history entry
+# It is not global index in the histfile, but
+# index in the list of matched entries (the grep'd result).
+FUZZY_HIST_IDX=$(( $HISTSIZE - 1 ))
+# The last found history entry
+FUZZY_HIST_LAST=""
+FUZZY_SEARCH_FOR=""
+FUZZY_FOUND_ENTRIES=()
+fuzzy_fill_array
 
 zle -N fuzzy_hist_search
 bindkey '^[[A' fuzzy_hist_search
