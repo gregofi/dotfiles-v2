@@ -24,6 +24,7 @@ if false then
       },
   })
 else
+    -- from https://github.com/neovim/nvim-lspconfig/tree/master/lsp
     local servers = {
         rust_analyzer = {},
         ts_ls = {},
@@ -32,6 +33,7 @@ else
         gopls = {},
         hls = {},
         tailwindcss = {},
+        lua_ls = {},
     }
     
     for k, v in pairs(servers) do

@@ -113,9 +113,11 @@ FUZZY_FOUND_ENTRIES=()
 fuzzy_fill_array
 
 zle -N fuzzy_hist_search
-bindkey '^[[A' fuzzy_hist_search
 zle -N fuzzy_hist_back
+bindkey '^[[A' fuzzy_hist_search
 bindkey '^[[B' fuzzy_hist_back
+bindkey -M viins  "${terminfo[kcuu1]}" fuzzy_hist_search
+bindkey -M viins  "${terminfo[kcud1]}" fuzzy_hist_back
 
 # aliases
 # working with .dotfiles
@@ -135,6 +137,7 @@ alias gpsupf="git push --force-with-lease"
 alias gco="git checkout"
 alias gcm="git commit"
 alias grhh="git reset --hard"
+alias gl="git pull"
 
 alias k=kubectl
 
@@ -143,3 +146,15 @@ alias src="source ~/.zshrc"
 alias ...="cd ../.."
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# pnpm
+export PNPM_HOME="/home/gregofi/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
