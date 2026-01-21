@@ -1,3 +1,5 @@
+export EDITOR=nvim
+
 bind \cj accept-autosuggestion
 
 if status is-interactive
