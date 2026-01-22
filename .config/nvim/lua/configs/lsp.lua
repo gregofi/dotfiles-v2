@@ -34,6 +34,7 @@ else
         hls = {},
         tailwindcss = {},
         lua_ls = {},
+        basedpyright = {},
     }
     
     for k, v in pairs(servers) do
