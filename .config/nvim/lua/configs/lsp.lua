@@ -1,46 +1,21 @@
 vim.opt.signcolumn = 'yes'
 
-require('mason').setup({})
--- we don't use mason for the moment
-if false then
-  require('mason-lspconfig').setup({
-      ensure_installed = {
-          'clangd',
-          'rust_analyzer',
-      },
-      handlers = {
-          function(server_name)
-              require('lspconfig')[server_name].setup({})
-          end,
+-- from https://github.com/neovim/nvim-lspconfig/tree/master/lsp
+local servers = {
+    rust_analyzer = {},
+    ts_ls = {},
+    clangd = {},
+    svelte = {},
+    gopls = {},
+    hls = {},
+    tailwindcss = {},
+    lua_ls = {},
+    basedpyright = {},
+}
 
-          clangd = function()
-              require('lspconfig').clangd.setup({
-                  cmd = {
-                      "clangd",
-                      "--offset-encoding=utf-16",
-                  }
-              })
-          end
-      },
-  })
-else
-    -- from https://github.com/neovim/nvim-lspconfig/tree/master/lsp
-    local servers = {
-        rust_analyzer = {},
-        ts_ls = {},
-        clangd = {},
-        svelte = {},
-        gopls = {},
-        hls = {},
-        tailwindcss = {},
-        lua_ls = {},
-        basedpyright = {},
-    }
-    
-    for k, v in pairs(servers) do
-        vim.lsp.config(k, v)
-        vim.lsp.enable(k)
-    end
+for k, v in pairs(servers) do
+    vim.lsp.config(k, v)
+    vim.lsp.enable(k)
 end
 
 -- Workaround for https://github.com/neovim/neovim/issues/30985

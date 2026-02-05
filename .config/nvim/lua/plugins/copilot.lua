@@ -1,4 +1,6 @@
-local Plugin = { 'github/copilot.vim' }
+local Plugin = { 'zbirenbaum/copilot.lua' }
+
+Plugin.opts = {}
 
 function Plugin.init()
     vim.g.copilot_no_tab_map = true
