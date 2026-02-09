@@ -3,7 +3,6 @@ vim.opt.signcolumn = 'yes'
 -- from https://github.com/neovim/nvim-lspconfig/tree/master/lsp
 local servers = {
     rust_analyzer = {},
-    ts_ls = {},
     clangd = {},
     svelte = {},
     gopls = {},
@@ -11,6 +10,7 @@ local servers = {
     tailwindcss = {},
     lua_ls = {},
     basedpyright = {},
+    tsgo = {},
 }
 
 for k, v in pairs(servers) do

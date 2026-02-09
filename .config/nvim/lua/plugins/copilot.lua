@@ -1,12 +1,32 @@
 local Plugin = { 'zbirenbaum/copilot.lua' }
 
-Plugin.opts = {}
+Plugin.opts = {
+    panel = {
+        enabled = false,
+        -- defaults here are very dangerous, for example accept swallows enter
+        keymap = {
+            jump_prev = false,
+            jump_next = false,
+            accept = false,
+            refresh = false,
+            open = false
+        },
+    },
+    suggestion = {
+        enabled = true,
+        auto_trigger = true,
+        keymap = {
+            accept = "<C-j>",
+            accept_word = "<C-h>",
+            accept_line = false,
 
-function Plugin.init()
-    vim.g.copilot_no_tab_map = true
-    -- We have to do this as raw vim script because using lua remap
-    -- causes an escape characters to be inserted at the end.
-    vim.cmd('imap <silent><script><expr> <C-J> copilot#Accept("\\<CR>")')
-end
+            next = "<C-k>",
+            prev = "<C-l>",
+
+            dismiss = false,
+            toggle_auto_trigger = false,
+        },
+    }
+}
 
 return Plugin

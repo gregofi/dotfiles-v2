@@ -2,9 +2,9 @@ export EDITOR=nvim
 
 bind \cj accept-autosuggestion
 
-if status is-interactive
-# Commands to run in interactive sessions can go here
-end
+# if status is-interactive
+# # Commands to run in interactive sessions can go here
+# end
 
 # aliases
 # working with .dotfiles
