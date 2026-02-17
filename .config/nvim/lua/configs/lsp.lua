@@ -11,6 +11,7 @@ local servers = {
     lua_ls = {},
     basedpyright = {},
     tsgo = {},
+    copilot = {},
 }
 
 for k, v in pairs(servers) do
