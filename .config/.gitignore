@@ -15,5 +15,5 @@
 
 !fish
 !fish/**
-
+!opencode
 !opencode/opencode.jsonc
