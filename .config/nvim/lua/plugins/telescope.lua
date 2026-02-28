@@ -25,6 +25,7 @@ function Plugin.init()
     vim.keymap.set('n', '<C-p>', ts.git_files, {})
     vim.keymap.set('n', '<leader>pg', ts.live_grep, {})
     vim.keymap.set('n', '<leader>pb', ts.buffers, {})
+    vim.keymap.set('n', '<leader>gr', function() ts.lsp_references({ initial_mode = "normal" }) end, { desc = "LSP references" })
 end
 
 return Plugin

@@ -8,7 +8,7 @@ vim.keymap.set("v", "<leader>as", function()
   local l2 = vim.fn.line("'>")
 
   -- build string
-  local text = string.format("%s L%d-%d", file, l1, l2)
+  local text = string.format("%s:%d-%d", file, l1, l2)
 
   -- write to clipboard
   vim.fn.setreg("+", text)
