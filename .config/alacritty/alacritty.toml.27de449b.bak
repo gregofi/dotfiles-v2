@@ -1,9 +1,5 @@
-[font]
-normal = { family = "JetBrainsMono Nerd Font", style = "Regular" }
-size = 11.0
-
 [env]
-WINIT_X11_SCALE_FACTOR = "1.0"
+WINIT_X11_SCALE_FACTOR = "1.1"
 
 [colors.primary]
 foreground = "#e0def4"
@@ -12,8 +8,8 @@ dim_foreground = "#908caa"
 bright_foreground = "#e0def4"
 
 [colors.cursor]
-text = "#000000"
-cursor = "#ffffff"
+text = "#e0def4"
+cursor = "#56526e"
 
 [colors.vi_mode_cursor]
 text = "#e0def4"
@@ -79,9 +75,3 @@ white = "#e0def4"
 
 [terminal]
 shell = "/usr/bin/fish"
-
-[keyboard]
-bindings = [
-   { key = "Return", mods = "Super|Shift", action = "SpawnNewInstance" },
-   { key = "Return", mods = "Shift", chars = "\x1b\r" },
-]

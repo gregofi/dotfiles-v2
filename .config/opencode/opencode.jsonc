@@ -8,10 +8,14 @@
     "bash": "ask",
     "webfetch": "ask",
     "bash": {
-      "git *": "allow",
-      "grep *": "allow"
-
       "*": "ask",
+
+      "git log *": "allow",
+      "git show *": "allow",
+      "git status *": "allow",
+      "grep *": "allow",
+      "find *": "allow",
+      "ls *": "allow",
     },
   }
 }

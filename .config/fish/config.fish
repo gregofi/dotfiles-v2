@@ -40,7 +40,7 @@ if not string match -q -- $PNPM_HOME $PATH
 end
 # pnpm end
 
-export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:/usr/local/go/bin:$HOME/go/bin:$PATH"
 
 # opencode
 fish_add_path /home/gregofi/.opencode/bin
