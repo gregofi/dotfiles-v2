@@ -5,8 +5,8 @@ vim.o.background = 'dark'
 
 local colorschemes = {
     -- theme does not understand o.background
-    vim.o.background == 'dark' and "github_dark" or "github_light",
     "rose-pine",
+    vim.o.background == 'dark' and "github_dark" or "github_light",
     "vscode",
 }
 

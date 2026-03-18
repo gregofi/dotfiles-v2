@@ -16,7 +16,7 @@ end
 Plugin.opts = {
     sort_by = "case_sensitive",
     view = {
-        width = 30,
+        -- width = 60,
     },
     on_attach = on_attach,
     renderer = {
